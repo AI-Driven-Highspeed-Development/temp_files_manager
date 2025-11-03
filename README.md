@@ -1,6 +1,6 @@
 # Temp Files Manager
 
-Lightweight manager for creating, tracking, and cleaning temporary directories used by other modules (e.g., GitHub operations). It centralizes temp path selection via project configuration and provides a tiny, safe API.
+Small, dependency‑light manager for creating, tracking, and cleaning temporary directories used by other modules (e.g., GitHub operations). It centralizes temp path selection via project configuration and provides a tiny, safe API.
 
 ## Overview
 - Centralizes where temporary working folders are created across the project
@@ -30,7 +30,7 @@ This module reads its base temp directory from the consolidated `.config` file. 
 ```
 Make sure `.config` includes the `unix_temp` (or `windows_temp`) path you prefer for temporary work.
 
-## Usage
+## Quickstart
 
 Basic creation and cleanup:
 
@@ -83,6 +83,9 @@ managers/temp_files_manager/
 └─ init.yaml                   # module metadata
 ```
 
+## Requirements & prerequisites
+- Python standard library only
+
 ## Troubleshooting
 - The `.config` file doesn’t contain `temp_files_manager.path.*` keys:
 	- Add the keys to `.config` or pass a `base_dir` explicitly to the constructor.
@@ -94,3 +97,7 @@ managers/temp_files_manager/
 - Uses `shutil.rmtree(..., ignore_errors=True)` for resilient cleanup.
 - Tracks created paths in-memory per instance; long-lived processes can call `cleanup_all` to ensure no leftovers.
 - Minimal logging via the project’s centralized logger.
+
+## See also
+- YAML Reading Core: read/write YAML files in your temporary workspace
+- GitHub API Core: fetch/clone files into temp directories managed here
