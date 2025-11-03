@@ -1,0 +1,6 @@
+{
+    "module_name": "temp_files_manager",
+    "path": {
+        "data": "./project/data/temp_files_manager"
+    }
+}
