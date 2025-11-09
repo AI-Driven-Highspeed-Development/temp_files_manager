@@ -1,4 +1,6 @@
 version: 0.0.1
 folder_path: managers/temp_files_manager
 type: manager
-requirements: []
+requirements:
+  - https://github.com/AI-Driven-Highspeed-Development/Config-Manager.git
+  - https://github.com/AI-Driven-Highspeed-Development/Logger-Util.git
