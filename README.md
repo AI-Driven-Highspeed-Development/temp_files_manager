@@ -15,21 +15,6 @@ Small, dependency‑light manager for creating, tracking, and cleaning temporary
 - Recursive cleanup of a specific path or all tracked paths
 - Small, dependency-light implementation
 
-## Configuration
-This module reads its base temp directory from the consolidated `.config` file. The expected keys are under `temp_files_manager.path`:
-
-```json
-{
-	"module_name": "temp_files_manager",
-	"path": {
-		"data": "./project/data/temp_files_manager",
-		"unix_temp": "/tmp/github_api_core",
-		"windows_temp": "C:\\Temp\\github_api_core"
-	}
-}
-```
-Make sure `.config` includes the `unix_temp` (or `windows_temp`) path you prefer for temporary work.
-
 ## Quickstart
 
 Basic creation and cleanup:
@@ -67,36 +52,43 @@ class TempFilesManager:
 		def cleanup_all(self) -> None: ...
 ```
 
-Notes:
+## Notes
+- Base directories are read from `.config.temp_files_manager.path`. Example snippet:
+
+```json
+{
+	"module_name": "temp_files_manager",
+	"path": {
+		"data": "./project/data/temp_files_manager",
+		"unix_temp": "/tmp/adhd-framework",
+		"windows_temp": "C:\\Temp\\adhd-framework"
+	}
+}
+```
+
 - `make_dir` returns the absolute path to a newly created directory under the resolved base dir.
-- `cleanup` removes a path recursively. It’s safe to call even if the path no longer exists.
-- `cleanup_all` removes all paths created via this instance’s `make_dir` during its lifetime.
-
-## Module Structure
-
-```
-managers/temp_files_manager/
-├─ __init__.py                 # package marker
-├─ .config_template            # default config schema for this module
-├─ README.md                   # this file
-├─ temp_files_manager.py       # implementation
-└─ init.yaml                   # module metadata
-```
+- `cleanup` removes a path recursively; it is safe to call even if the path was already deleted.
+- `cleanup_all` iterates over the tracked pool and removes every directory created by the instance.
+- Implementation relies on `shutil.rmtree(..., ignore_errors=True)` for resilience and logs every action via Logger Utility.
 
 ## Requirements & prerequisites
 - Python standard library only
 
 ## Troubleshooting
-- The `.config` file doesn’t contain `temp_files_manager.path.*` keys:
-	- Add the keys to `.config` or pass a `base_dir` explicitly to the constructor.
-- Permission errors when creating or deleting temp directories:
-	- Ensure the configured base directory is writable by your user.
-- On Windows, ensure the configured `windows_temp` path exists or is creatable.
+- **Missing config keys** – ensure `.config.temp_files_manager.path.unix_temp` or `.windows_temp` exists, or pass `base_dir` to the constructor.
+- **Permission errors** – pick a writable base directory and verify antivirus tools aren’t locking the path.
+- **Windows path issues** – escape backslashes properly in `.config` and confirm the drive exists.
 
-## Design notes
-- Uses `shutil.rmtree(..., ignore_errors=True)` for resilient cleanup.
-- Tracks created paths in-memory per instance; long-lived processes can call `cleanup_all` to ensure no leftovers.
-- Minimal logging via the project’s centralized logger.
+## Module structure
+
+```
+managers/temp_files_manager/
+├─ __init__.py                 # package marker
+├─ .config_template            # default config schema for this module
+├─ temp_files_manager.py       # implementation
+├─ init.yaml                   # module metadata
+└─ README.md                   # this file
+```
 
 ## See also
 - YAML Reading Core: read/write YAML files in your temporary workspace
