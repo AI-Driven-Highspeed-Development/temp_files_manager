@@ -5,8 +5,8 @@ import shutil
 import uuid
 from typing import Optional
 
-from managers.config_manager import ConfigManager
-from utils.logger_util.logger import Logger
+from config_manager import ConfigManager
+from logger_util import Logger
 
 
 class TempFilesManager:
