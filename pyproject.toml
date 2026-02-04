@@ -12,12 +12,7 @@ dependencies = [
 Repository = "https://github.com/AI-Driven-Highspeed-Development/temp_files_manager.git"
 
 [tool.adhd]
-type = "manager"
 layer = "dev"
-
-[tool.uv.sources]
-config-manager = { git = "https://github.com/AI-Driven-Highspeed-Development/config-manager.git" }
-logger-util = { git = "https://github.com/AI-Driven-Highspeed-Development/Logger-Util.git" }
 
 [build-system]
 requires = ["hatchling"]
